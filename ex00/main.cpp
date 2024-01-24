@@ -3,7 +3,8 @@
 int main()
 {
     
-    randomChump("rrakman"); 
-    
+    randomChump("rrakman f stack"); 
+    Zombie *a = newZombie("rakman flheap");
+    delete a;
     return 0;
 }
