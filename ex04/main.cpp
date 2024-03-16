@@ -1,35 +1,51 @@
 #include<iostream>
 #include<fstream>
 
+bool isFileEmpty(const char* filename) {
+    std::ifstream file(filename, std::ios::ate);
+    return file.tellg() == 0;
+}
+
 int main(int ac,char **av)
 {
 	if(ac == 4)
 	{
 		std::string input_file(av[1]);
-		std::ifstream file(av[1]);
+		std::string needle(av[2]);
+		std::string toinsert(av[3]);
 		std::string str;
-
-		if(!file.is_open() && !file.good())
+		std::string rslt;
+		std::ifstream file(av[1]);
+		
+		if(!file.is_open() || !file.good())
 		{
 			std::cout<<"encountred an error while opening the file!"<<std::endl;
 			return -1;
 		}
-		if(std::getline(file, str,'\0'))
+		if (isFileEmpty(av[1])) {
+        	std::cout << "File is empty." << std::endl;
+			return -1;
+		}
+		while(1)
 		{
+			if(!std::getline(file, str))
+				break;
 			size_t i = str.find(av[2],0);
-			std::string needle(av[2]);
-			std::string toinsert(av[3]);
-			if(i != std::string::npos)
+			while(i != std::string::npos)
 			{
 				str.erase(i,needle.length());
 				str.insert(i,toinsert);
+				i = str.find(av[2], 0);
 			}
-			std::ofstream MyFile(input_file + ".replace");
-			MyFile<<str;
-			MyFile.close();
+			if(!file.eof())
+				rslt.append(str+'\n');
+			else
+				rslt.append(str);
 		}
-		else
-			std::cout<<"Error, File is Empty"<<std::endl;
+		std::string out_file = input_file + ".replace";
+		std::ofstream MyFile(out_file.c_str());
+		MyFile<<rslt;
+		MyFile.close();
 	}
 	else
 	{
