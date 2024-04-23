@@ -9,6 +9,13 @@ void HumanB::setWeapon(Weapon &aWeapon)
 {
 	this->w = &aWeapon;
 }
+void HumanB::setWeapon(Weapon *aWeapon)
+{
+	if(aWeapon == NULL)
+		return;
+	else
+		w = aWeapon;
+}
 
 void HumanB::attack()
 {

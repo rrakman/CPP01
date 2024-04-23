@@ -9,5 +9,6 @@ class HumanB
 	public:
 		HumanB(std::string str);
 		void setWeapon(Weapon &aWeapon);
+		void setWeapon(Weapon *aWeapon);
 		void attack();
 };
